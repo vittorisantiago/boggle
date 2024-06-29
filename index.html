@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boggle</title>
+    <link rel="icon" href="img/boggle.ico" type="image/x-icon">
+    <!-- FontAwesome para iconos -->
+    <script src="https://kit.fontawesome.com/6e6d0e2c72.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="nav-container">
+            <!-- Botón para abrir el menú -->
+            <button id="menu-toggle" aria-label="Abrir Menú" class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <ul id="menu" class="hidden" aria-labelledby="menu-toggle">
+                <li id="menu-close"><i class="fas fa-times"></i></li>
+                <li><a href="#" id="theme-toggle"><i class="fas fa-sun"></i> Tema Claro</a></li>
+                <li id="difficulty-toggle">
+                    <span><i class="fas fa-tasks"></i> Elegir Dificultad</span>
+                    <ul id="difficulty-options" class="hidden">
+                        <li><label><input type="radio" name="difficulty" value="easy" checked> Fácil</label></li>
+                        <li><label><input type="radio" name="difficulty" value="hard"> Difícil</label></li>
+                    </ul>
+                </li>
+                <li><a href="#" id="ranking-toggle"><i class="fas fa-trophy"></i> Ver Ranking</a></li>
+            </ul>
+        </div>
+        <!-- Contenedor del logo -->
+        <div class="header-logo-container">
+            <img src="img/Logo.png" alt="Logo Boggle">
+        </div>
+    </header>        
+
+    <!-- Contenido principal -->
+    <main>
+        <!-- Sección de configuración -->
+        <section class="setup">
+            <div class="input-container">
+                <label for="player-name">Nombre del jugador</label>
+                <input type="text" id="player-name" placeholder="Ingresa tu nombre" minlength="3" required>
+            </div>
+            <div class="input-container">
+                <label for="game-time">Tiempo de juego</label>
+                <select id="game-time">
+                    <option value="1">1 minuto</option>
+                    <option value="2">2 minutos</option>
+                    <option value="3">3 minutos</option>
+                </select>
+            </div>
+            <div class="button-container">
+                <button id="start-game" class="game-button" disabled>Iniciar Juego</button>
+            </div>
+        </section>
+
+        <!-- Contenedor del juego -->
+        <section class="game hidden">
+            <!-- Casillas 4x4 del juego -->
+            <div id="board" class="board"></div>
+            <!-- Tiempo de juego -->
+            <div id="timer" class="timer">Tiempo: <span id="time">0</span> segundos</div>
+            <!-- Palabras seleccionadas -->
+            <div id="selected-words" class="selected-words"></div>
+            <!-- Contenedor para mostrar mensajes de error -->
+            <div id="error-message" class="error-message hidden">La palabra no es válida</div>
+            <!-- Botones de enviar, mezclar, limpiar y cancelar -->
+            <div class="button-container">
+                <button id="word-submit" class="game-button word-submit">
+                    <span class="icon-mobile"><i class="fas fa-paper-plane"></i></span>
+                    <span class="icon-desktop">Enviar</span>
+                </button>
+                <button id="shuffle-board" class="game-button shuffle-board">
+                    <span class="icon-mobile"><i class="fas fa-random"></i></span>
+                    <span class="icon-desktop">Mezclar</span>
+                </button>
+                <button id="clear-selection" class="game-button clear-selection">
+                    <span class="icon-mobile"><i class="fas fa-eraser"></i></span>
+                    <span class="icon-desktop">Limpiar</span>
+                </button>
+                <button id="cancel-game" class="game-button cancel-game">
+                    <span class="icon-mobile"><i class="fas fa-times"></i></span>
+                    <span class="icon-desktop">Cancelar</span>
+                </button>
+            </div>            
+            <!-- Contenedor de palabras enviadas -->
+            <div id="submitted-words" class="submitted-words"></div>
+            <!-- Puntaje -->
+            <div id="score-display" class="score-display">0</div>
+            <!-- Contendor persistente de palabras enviadas -->
+            <div class="persistent-submitted-words"></div>
+        </section>
+    </main>        
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="footer-content">
+            <a href="https://github.com/vittorisantiago/boggle" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contacto</a>
+        </div>
+    </footer>
+</body>
+</html>
