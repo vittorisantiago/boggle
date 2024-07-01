@@ -1,3 +1,9 @@
+/* Variables de tema */
+:root {
+    --bg-color: rgb(255, 255, 255);
+    --text-color: rgb(0, 0, 0);
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     display: flex;
@@ -36,4 +42,46 @@ header img {
     display: block;
     max-width: 100%;
     height: auto;
+}
+
+/* Botón para abrir el menú */
+.menu-toggle {
+    border: none;
+    background: none;
+    color: var(--text-color);
+    font-size: 24px;
+}
+
+/* Menu de navegación */
+#menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    list-style: none;
+    top: 0;
+    height: 100%;
+    width: 250px;
+    padding: 32px 32px;
+    border-radius: 0 20px 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    background-color: var(--bg-color);
+    transition: left 0.3s ease;
+    z-index: 1;
+}
+
+#menu li {
+    padding: 24px 0;
+}
+
+#menu li a {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+#difficulty-options li {
+    list-style: none;
+    padding: 10px 0;
+    margin-left: 40px;
+    margin-top: 10px;
 }
