@@ -1,7 +1,9 @@
 /* Variables de tema */
 :root {
     --bg-color: rgb(255, 255, 255);
+    --bg-color-footer: rgb(159, 195, 189);
     --text-color: rgb(0, 0, 0);
+    --primary-color: rgb(0, 137, 234);
 }
 
 body {
@@ -84,4 +86,88 @@ header img {
     padding: 10px 0;
     margin-left: 40px;
     margin-top: 10px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.setup, .game {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.game {
+    max-width: 300px;
+    padding: 16px 8px;
+}
+
+.input-container {
+    margin-bottom: 24px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.input-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.input-container input,
+.input-container select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.game-button {
+    flex: 0 0 auto; /* Permitir que los botones se ajusten según su contenido */
+    border: none;
+    padding: 16px 32px;
+    border-radius: 20px;
+    background-color: var(--primary-color);
+    color: rgb(255, 255, 255);
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    font-size: 16px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos del pie de página */
+.footer-content {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+footer {
+    padding: 48px;
+    background-color: var(--bg-color-footer);
+    text-align: center;
+}
+
+footer a {
+    margin: 0 24px;
+    color: var(--primary-color);
+    text-decoration: none;
 }
