@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+/* Resetear CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* Variables de tema */
 :root {
     --bg-color: rgb(255, 255, 255);
@@ -69,6 +78,17 @@ header img {
     background-color: var(--bg-color);
     transition: left 0.3s ease;
     z-index: 1;
+}
+
+#menu.show {
+    left: 0;
+}
+
+#menu-close {
+    align-self: flex-end;
+    padding: 16px;
+    margin-right: 10px;
+    margin-top: 10px;
 }
 
 #menu li {
@@ -150,6 +170,10 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.hidden {
+    display: none;
 }
 
 /* Estilos del pie de página */
