@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contacto</title>
+        <link rel="stylesheet" href="./css/contact-styles.css">
+        <script src="https://kit.fontawesome.com/6e6d0e2c72.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="contact-container">
+            <header>
+                <div class="header-logo-container">
+                    <a href="index.html">
+                        <img src="img/Logo.png" alt="Logo BOGGLE">
+                    </a>
+                </div>
+            </header>
+            <main>
+                <form id="contact-form">
+                    <h2>Contáctanos</h2>
+                    <label for="name">Nombre*:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="email">Correo electrónico*:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="message">Mensaje*:</label>
+                    <textarea id="message" name="message" required></textarea>
+                    <button type="submit">Enviar</button>
+                </form>
+            </main>
+            <footer>
+                <a href="https://github.com/tu-github" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </footer>
+        </div>
+
+        <script src="./js/contact.js"></script>
+    </body>
+</html>
