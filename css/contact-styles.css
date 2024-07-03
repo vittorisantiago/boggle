@@ -1,0 +1,111 @@
+/* Resetear CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: rgb(255, 255, 255);
+    --bg-color-footer: rgb(159, 195, 189);
+    --text-color: rgb(0, 0, 0);
+    --primary-color: rgb(0, 137, 234);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    padding: 16px;
+    position: relative;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    color: var(--text-color);
+}
+.header-logo-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    max-width: 150px;
+    transform: translate(-50%, -50%);
+}
+header img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+main {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#contact-form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 60%;
+}
+
+#contact-form button {
+    border: none;
+    width: 25%;
+    padding: 16px 32px;
+    border-radius: 20px;
+    background-color: var(--primary-color);
+    color: rgb(255, 255, 255);
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Estilo para los inputs */
+input {
+    border: none;
+    background-color: #d3d3d3; /* gris claro */
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+/* Estilo para el textarea */
+textarea {
+    border: none;
+    background-color: #d3d3d3; /* gris claro */
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    resize: none; /* Evita que el textarea sea redimensionable */
+    width: 100%; /* Ajusta según sea necesario */
+    height: 200px; /* Ajusta según sea necesario */
+}
+  
+
+footer {
+    padding: 48px;
+    background-color: var(--bg-color-footer);
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+footer a {
+    margin: 0 24px;
+    color: var(--primary-color);
+    text-decoration: none;
+}
