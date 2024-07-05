@@ -198,6 +198,12 @@ main {
     transition: background-color 0.3s;
 }
 
+.selected {
+    font-weight: bold;
+}
+.highlight {
+    background-color: orange !important;
+}
 /* Estilos del pie de página */
 .footer-content {
     display: flex;
