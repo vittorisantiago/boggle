@@ -13,7 +13,7 @@
     --bg-color-footer: rgb(159, 195, 189);
     --text-color: rgb(0, 0, 0);
     --primary-color: rgb(0, 137, 234);
-    
+    --secondary-color: rgb(3, 218, 198);
 }
 
 body {
@@ -178,6 +178,25 @@ main {
     display: none;
 }
 
+/* Estilos para el tablero del juego*/
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.board button {
+    flex: 1 0 calc(25% - 8px); /* Calcula el ancho del botón con espacio entre ellos */
+    max-width: calc(25% - 8px); /* Asegura que cada botón tenga el mismo ancho */
+    border: none;
+    border-radius: 4px;
+    padding: 16px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 24px;
+    transition: background-color 0.3s;
+}
 
 /* Estilos del pie de página */
 .footer-content {
