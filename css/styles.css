@@ -16,6 +16,12 @@
     --secondary-color: rgb(3, 218, 198);
 }
 
+body.dark-mode {
+    --bg-color: rgb(56, 56, 56);
+    --bg-color-footer: rgb(159, 195, 189);
+    --text-color: rgb(224, 224, 224);
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     display: flex;
@@ -110,6 +116,14 @@ header img {
     margin-top: 10px;
 }
 
+.swal2-title-dark {
+    color: rgb(255, 255, 255) !important;
+}
+
+.swal2-html-container-dark {
+    color: rgb(255, 255, 255) !important;
+}
+
 main {
     display: flex;
     justify-content: center;
@@ -201,9 +215,11 @@ main {
 .selected {
     font-weight: bold;
 }
+
 .highlight {
-    background-color: orange !important;
+    background-color: rgb(255, 165, 0) !important;
 }
+
 /* Estilos del pie de página */
 .footer-content {
     display: flex;
