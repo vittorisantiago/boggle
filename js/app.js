@@ -22,6 +22,20 @@ document.addEventListener('DOMContentLoaded', function () {
     var currentWord = '';
     var selectedCells = [];
 
+    // Elemento del DOM para el tema
+    var themeToggle = document.getElementById('theme-toggle');
+    var icon = themeToggle.getElementsByTagName('i')[0]; // Selecciona el primer <i> dentro de themeToggle
+    var body = document.body;
+
+    // Elementos del DOM para la dificultad y el ranking
+    var difficultyToggle = document.getElementById('difficulty-toggle');
+    var difficultyOptions = document.getElementById('difficulty-options');
+    var difficultyInputs = document.getElementsByName('difficulty');
+    var difficulty = 'easy';
+
+    // Elemento del DOM para el ranking
+    var rankingToggle = document.getElementById('ranking-toggle');
+
     // Cierra el menú lateral si se hace clic fuera de él
     function handleClickOutsideMenu(event) {
         if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
@@ -44,8 +58,100 @@ document.addEventListener('DOMContentLoaded', function () {
     // Evento para manejar el clic fuera del menú lateral
     document.addEventListener('click', handleClickOutsideMenu);
 
-    //Iniciar tablero
+    // Función para verificar si el modo oscuro está activo
+    function isDarkMode() {
+        return body.classList.contains('dark-mode');
+    }
 
+    // Función para actualizar el texto y el icono del tema
+    function updateThemeToggle() {
+        var text = isDarkMode() ? ' Tema Oscuro' : ' Tema Claro';
+
+        if (isDarkMode()) {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        } else {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        themeToggle.childNodes[1].textContent = text;
+    }
+
+    // Evento para alternar el tema oscuro o claro
+    themeToggle.addEventListener('click', function (event) {
+        event.preventDefault();  // Evita que el enlace realice la acción por defecto
+        body.classList.toggle('dark-mode');
+        updateThemeToggle();
+    });
+
+    // Inicializar el estado del tema al cargar la página
+    updateThemeToggle();
+
+    // Evento para mostrar u ocultar las opciones de dificultad
+    difficultyToggle.addEventListener('click', function () {
+        difficultyOptions.classList.toggle('hidden');
+    });
+
+    // Evento para cambiar la dificultad seleccionada
+    for (var i = 0; i < difficultyInputs.length; i++) {
+        difficultyInputs[i].addEventListener('change', function (event) {
+            difficulty = event.target.value;
+        });
+    }
+
+    function showRankings() {
+        var results = JSON.parse(localStorage.getItem('results') || '[]');
+        var difficulties = ['easy', 'hard'];
+        var rankingContainer = document.createElement('div');
+    
+        difficulties.forEach(difficulty => {
+            var difficultyTitle = document.createElement('h3');
+            difficultyTitle.textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1) + ' Mode';
+            rankingContainer.appendChild(difficultyTitle);
+    
+            [1, 2, 3].forEach(time => {
+                var filteredResults = results.filter(result => result.difficulty === difficulty && result.time == time)
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 3);
+    
+                var timeTitle = document.createElement('h4');
+                timeTitle.textContent = `${time} minuto(s)`;
+                rankingContainer.appendChild(timeTitle);
+    
+                if (filteredResults.length > 0) {
+                    var ul = document.createElement('ul');
+                    filteredResults.forEach(result => {
+                        var li = document.createElement('li');
+                        li.textContent = `${result.player}: ${result.score} puntos (${result.date})`;
+                        ul.appendChild(li);
+                    });
+                    rankingContainer.appendChild(ul);
+                } else {
+                    var noResultsMessage = document.createElement('p');
+                    noResultsMessage.textContent = 'No hay resultados';
+                    rankingContainer.appendChild(noResultsMessage);
+                }
+            });
+        });
+    
+        Swal.fire({
+            title: 'Ranking',
+            html: rankingContainer.outerHTML,
+            width: 600,
+            padding: '48px',
+            background: isDarkMode() ? 'rgb(44, 62, 80)' : 'rgb(255, 255, 255)',
+            customClass: {
+                title: isDarkMode() ? 'swal2-title-dark' : '',
+                htmlContainer: isDarkMode() ? 'swal2-html-container-dark' : ''
+            }
+        });
+    }    
+
+    // Evento para mostrar el ranking de los jugadores
+    rankingToggle.addEventListener('click', showRankings);
+
+    //Iniciar tablero
     startGameButton.addEventListener('click', function () {
         if (playerNameInput.value.trim().length < 3) {
             Swal.fire('Error', 'El nombre del jugador debe tener al menos 3 caracteres', 'error');
@@ -73,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
             board.appendChild(cell);
         }
     }
+
     // Maneja el clic en una celda del tablero
     function handleCellClick(event) {
         var cell = event.target;
@@ -108,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
     // Obtiene las celdas adyacentes a una celda dada
     function getAdjacentCells(cell) {
         var cells = Array.from(board.children);
@@ -127,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return adjacentCells;
     }
+
     // Verifica si dos celdas son adyacentes en el tablero
     function isAdjacent(cell1, cell2) {
         var cells = Array.from(board.children);
