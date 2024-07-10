@@ -171,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
     function startGame() {
         currentWord = '';
         selectedCells = [];
@@ -181,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
         initBoard();
         document.querySelector('.setup').classList.add('hidden');
         document.querySelector('.game').classList.remove('hidden');
+        clearPersistentWords();
         isGameRunning = true;
     }
 
@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (length === 3 || length === 4) return 1;
         return 0;
     }
-    
+
     // Muestra un mensaje de error temporal
     function showErrorMessage(message) {
         errorMessage.textContent = message;
@@ -368,6 +368,24 @@ document.addEventListener('DOMContentLoaded', function () {
             errorMessage.classList.add('hidden');
             clearBoard();
         }, 2000);
+    }
+
+     // Función para limpiar el cuadro de palabras persistentes
+     function clearPersistentWords() {
+        var persistentContainer = document.querySelector('.persistent-submitted-words');
+        persistentContainer.innerHTML = '';
+    }
+
+    function saveResult() {
+        var results = JSON.parse(localStorage.getItem('results') || '[]');
+        results.push({
+            player: playerNameInput.value.trim(),
+            score: totalScore, // Guarda el puntaje total
+            date: new Date().toLocaleString(),
+            difficulty: difficulty,
+            time: gameTimeSelect.value
+        });
+        localStorage.setItem('results', JSON.stringify(results));
     }
 });
 

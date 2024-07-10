@@ -14,6 +14,7 @@
     --text-color: rgb(0, 0, 0);
     --primary-color: rgb(0, 137, 234);
     --secondary-color: rgb(3, 218, 198);
+    --submit-color: rgb(6, 204, 62);
 }
 
 body.dark-mode {
@@ -218,6 +219,33 @@ main {
 
 .highlight {
     background-color: rgb(255, 165, 0) !important;
+}
+
+.word-submit {
+    background-color: var(--submit-color);
+}
+
+.score-display {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.persistent-submitted-words {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    border: 2px solid rgb(204, 204, 204);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--bg-color);
+}
+
+/* Estilos para el mensaje de error */
+.error-message {
+    color: var(--error-color);
+    font-weight: bold;
+    animation: shake 0.5s;
 }
 
 /* Estilos del pie de página */
