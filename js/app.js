@@ -36,6 +36,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Elemento del DOM para el ranking
     var rankingToggle = document.getElementById('ranking-toggle');
 
+    // Elemento del DOM para el envio de palabras y puntaje
+    var wordSubmitButton = document.getElementById('word-submit');
+    var errorMessage = document.getElementById('error-message');
+    var scoreDisplay = document.getElementById('score-display');
+    var submittedWordsDisplay = document.getElementById('submitted-words');
+    var submittedWords = [];
+    var totalScore = 0;
+
+    // Evento al hacer clic en el botón de enviar palabra
+    wordSubmitButton.addEventListener('click', submitWord);
+
     // Cierra el menú lateral si se hace clic fuera de él
     function handleClickOutsideMenu(event) {
         if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
@@ -162,13 +173,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function startGame() {
+        currentWord = '';
+        selectedCells = [];
+        submittedWords = [];
+        totalScore = 0; // Reinicia el puntaje total
+        scoreDisplay.textContent = `Total: ${totalScore}`; // Muestra el puntaje total
         initBoard();
         document.querySelector('.setup').classList.add('hidden');
         document.querySelector('.game').classList.remove('hidden');
         isGameRunning = true;
     }
 
-    // Función para incializar el tablero con varras aleatorias
+    // Función para incializar el tablero con barras aleatorias
     function initBoard() {
         board.innerHTML = '';
         for (var i = 0; i < 16; i++) {
@@ -180,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Maneja el clic en una celda del tablero
+    // Maneja el click en una celda del tablero
     function handleCellClick(event) {
         var cell = event.target;
         if (selectedCells.includes(cell)) {
@@ -207,13 +223,15 @@ document.addEventListener('DOMContentLoaded', function () {
         currentWord += cell.textContent;
         selectedWordsDisplay.textContent = currentWord;
 
-        // Obtiene las celdas adyacentes y marca las seleccionables
-        var adjacentCells = getAdjacentCells(cell);
-        adjacentCells.forEach(adjacentCell => {
-            if (!selectedCells.includes(adjacentCell)) {
-                adjacentCell.classList.add('highlight'); // Clase para resaltar temporalmente
-            }
-        });
+        if (difficulty === 'easy') {
+            // Obtiene las celdas adyacentes y marca las seleccionables
+            var adjacentCells = getAdjacentCells(cell);
+            adjacentCells.forEach(adjacentCell => {
+                if (!selectedCells.includes(adjacentCell)) {
+                    adjacentCell.classList.add('highlight'); // Clase para resaltar temporalmente
+                }
+            });
+        }
     }
 
     // Obtiene las celdas adyacentes a una celda dada
@@ -246,6 +264,110 @@ document.addEventListener('DOMContentLoaded', function () {
         var row2 = Math.floor(index2 / 4);
         var col2 = index2 % 4;
         return Math.abs(row1 - row2) <= 1 && Math.abs(col1 - col2) <= 1;
+    }
+
+    // Valida y procesa la palabra enviada por el jugador
+    function submitWord() {
+        if (currentWord.length < 3) {
+            showErrorMessage('La palabra no es válida');
+            clearBoard(); // Limpiar todas las casillas cuando la palabra no es válida
+            return;
+        }
+    
+        if (submittedWords.includes(currentWord)) {
+            showErrorMessage('La palabra ya ha sido enviada');
+            clearBoard(); // Limpiar todas las casillas cuando la palabra ya ha sido enviada
+            return;
+        }
+    
+        validateWord(currentWord, function (isValid) {
+            var points = 0;
+            if (isValid) {
+                points = calculatePoints(currentWord.length);
+                totalScore += points;
+                showScoreMessage(currentWord, points, true);
+            } else {
+                points = -1;
+                if (totalScore > 0) {
+                    totalScore += points;
+                }
+                showScoreMessage(currentWord, points, false);
+            }
+            scoreDisplay.textContent = `Total: ${totalScore}`; // Mostrar el puntaje total actualizado
+            submittedWords.push(currentWord);
+            clearBoard(); // Limpiar todas las casillas después de enviar una palabra (tanto válida como no válida)
+        });
+    }
+    
+    function clearBoard() {
+        var allCells = Array.from(board.children);
+        allCells.forEach(cell => {
+            cell.classList.remove('selected');
+            cell.classList.remove('bold');
+            cell.classList.remove('selectable');
+            cell.classList.remove('highlight');
+        });
+        selectedCells = [];
+        selectedWordsDisplay.textContent = '';
+        currentWord = '';
+    }
+
+    // Muestra un mensaje de puntaje para la palabra ingresada
+    function showScoreMessage(word, points, isPositive) {
+        var scoreMessage = document.createElement('div');
+        scoreMessage.textContent = `${word}: ${isPositive ? `+${points}` : `${points}`} puntos`;
+        scoreMessage.classList.add(isPositive ? 'positive-score' : 'negative-score');
+        submittedWordsDisplay.appendChild(scoreMessage);
+
+        setTimeout(() => {
+            scoreMessage.classList.add('fade-out');
+            setTimeout(() => {
+                var persistentWord = document.createElement('div');
+                persistentWord.textContent = word;
+                persistentWord.classList.add(isPositive ? 'positive-score' : 'negative-score');
+                document.querySelector('.persistent-submitted-words').appendChild(persistentWord);
+                scoreMessage.remove();
+            }, 1000);
+        }, 2000);
+    }
+
+    // Valida si una palabra es válida usando una API externa
+    function validateWord(word, callback) {
+        var url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Palabra no encontrada');
+                }
+                return response.json();
+            })
+            .then(data => {
+                callback(true);
+            })
+            .catch(error => {
+                callback(false);
+            });
+    }
+
+    // Calcula los puntos para una palabra según su longitud
+    function calculatePoints(length) {
+        if (length >= 8) return 11;
+        if (length === 7) return 5;
+        if (length === 6) return 3;
+        if (length === 5) return 2;
+        if (length === 3 || length === 4) return 1;
+        return 0;
+    }
+    
+    // Muestra un mensaje de error temporal
+    function showErrorMessage(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('hidden');
+        setTimeout(function () {
+            errorMessage.textContent = '';
+            errorMessage.classList.add('hidden');
+            clearBoard();
+        }, 2000);
     }
 });
 
