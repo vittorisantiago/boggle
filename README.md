@@ -1,8 +1,8 @@
-# Boogle
+# Boggle
 
-[![Boggle logo](https://i.postimg.cc/ydchvxYD/Logo.png)](https://postimg.cc/TL2WPRbx)
+![Boggle logo](https://i.postimg.cc/ydchvxYD/Logo.png)
 
-Boogle es un emocionante juego de palabras donde tu habilidad para formar palabras se enfrenta al tiempo. ¡Demuestra tu destreza y encuentra la mayor cantidad de palabras posibles antes de que se agote el tiempo!
+Boggle es un emocionante juego de palabras donde tu habilidad para formar palabras se enfrenta al tiempo. ¡Demuestra tu destreza y encuentra la mayor cantidad de palabras posibles antes de que se agote el tiempo!
 
 ## Características
 
@@ -33,4 +33,6 @@ Boogle es un emocionante juego de palabras donde tu habilidad para formar palabr
 
 ## ¡Únete a la Diversión!
 
-¡Explora tu habilidad para formar palabras y desafía a tus amigos en Boogle! ¿Tienes lo necesario para alcanzar la puntuación más alta?
+¡Explora tu habilidad para formar palabras y desafía a tus amigos en Boggle! ¿Tienes lo necesario para alcanzar la puntuación más alta?
+
+Jugalo [aquí](https://vittorisantiago.github.io/boggle/).
