@@ -15,6 +15,7 @@
     --primary-color: rgb(0, 137, 234);
     --secondary-color: rgb(3, 218, 198);
     --submit-color: rgb(6, 204, 62);
+    --error-color: rgb(255, 0, 0);
 }
 
 body.dark-mode {
@@ -175,6 +176,9 @@ main {
 }
 
 .game-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex: 0 0 auto; /* Permitir que los botones se ajusten según su contenido */
     border: none;
     padding: 16px 32px;
@@ -184,9 +188,6 @@ main {
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     font-size: 16px;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .hidden {
@@ -213,7 +214,24 @@ main {
     transition: background-color 0.3s;
 }
 
+.timer, .selected-words, .submitted-words {
+    margin: 5px 0;
+}
+
+.timer #time {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.warning {
+    color: var(--error-color);
+}
+
 .selected {
+    font-weight: bold;
+}
+
+.selected-words {
     font-weight: bold;
 }
 
@@ -223,6 +241,35 @@ main {
 
 .word-submit {
     background-color: var(--submit-color);
+}
+
+.cancel-game {
+    background-color: var(--error-color);
+}
+
+.game-button .icon-mobile {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.game-button .icon-desktop {
+    display: none; /* Ocultar texto en dispositivos móviles */
+}
+
+.positive-score {
+    color: var(--submit-color);
+    font-weight: bold;
+}
+
+.negative-score {
+    color: var(--error-color);
+    font-weight: bold;
+}
+
+.fade-out {
+    transition: opacity 1s ease-out;
+    opacity: 0;
 }
 
 .score-display {
@@ -266,4 +313,23 @@ footer a {
     margin: 0 24px;
     color: var(--primary-color);
     text-decoration: none;
+}
+
+/* Animación de movimiento lateral para error */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Animación de giro para mezclar */
+.spin {
+    animation: spin 0.5s;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
