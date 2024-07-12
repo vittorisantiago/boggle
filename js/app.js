@@ -55,6 +55,39 @@ document.addEventListener('DOMContentLoaded', function () {
     var interval;
     var timeRemaining;
 
+    // Elementos del DOM para el las intrucciones
+    var instructions = document.getElementById('intructions');
+    var instruction = `
+        <h3>Introducción</h3>
+        <p>Boggle es un juego de palabras en el que intentas encontrar tantas palabras como puedas en una cuadrícula de 4x4 letras dispuestas al azar. Tienes un tiempo limitado para jugar.</p>
+        <h3>Reglas</h3>
+        <ul style="text-align: left;">
+            <li>Las palabras deben tener al menos 3 letras.</li>
+            <li>Cada letra después de la primera debe estar junto a la anterior (horizontal, vertical o diagonalmente).</li>
+            <li>No puedes usar la misma casilla más de una vez en una palabra.</li>
+            <li>Se permiten diferentes formas de la misma palabra (singulares, plurales, etc.), pero no nombres propios, artículos ni pronombres.</li>
+            <li>Puedes formar palabras dentro de otras palabras (como "casa" y "casamiento").</li>
+            <li>Las palabras deben ser reales y existir en el diccionario. Si ingresas una palabra que no es real, recibirás una penalización.</li>
+        </ul>
+        <p>¡Disfruta jugando Boggle y demuestra tu habilidad para encontrar palabras!</p>
+    `;
+
+    // Evento para mostrar las instrucciones
+    instructions.addEventListener('click', function () {
+        Swal.fire({
+            title: 'Instrucciones',
+            html: instruction,
+            confirmButtonText: 'Cerrar',
+            width: 600,
+            padding: '48px',
+            background: isDarkMode() ? 'rgb(44, 62, 80)' : 'rgb(255, 255, 255)',
+            customClass: {
+                title: isDarkMode() ? 'swal2-title-dark' : '',
+                htmlContainer: isDarkMode() ? 'swal2-html-container-dark' : ''
+            }
+        });
+    });
+
     // Cierra el menú lateral si se hace clic fuera de él
     function handleClickOutsideMenu(event) {
         if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
