@@ -44,8 +44,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var submittedWords = [];
     var totalScore = 0;
 
-    // Evento al hacer clic en el botón de enviar palabra
-    wordSubmitButton.addEventListener('click', submitWord);
+    // Elementos del DOM mezclar, cancelar y limpiar
+    var shuffleBoardButton = document.getElementById('shuffle-board');
+    var clearGameButton = document.getElementById('clear-selection');
+    var cancelGameButton = document.getElementById('cancel-game');
+
+    // Elemento del DOM para el tiempo de juego
+    var timerDisplay = document.getElementById('time');
+    var gameTimeSelect = document.getElementById('game-time');
+    var interval;
+    var timeRemaining;
 
     // Cierra el menú lateral si se hace clic fuera de él
     function handleClickOutsideMenu(event) {
@@ -172,12 +180,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function startGame() {
+        timerDisplay.textContent = '';
+        timeRemaining = parseInt(gameTimeSelect.value, 10) * 60;
         currentWord = '';
         selectedCells = [];
         submittedWords = [];
         totalScore = 0; // Reinicia el puntaje total
         scoreDisplay.textContent = `Total: ${totalScore}`; // Muestra el puntaje total
         initBoard();
+        interval = setInterval(updateTimer, 1000);
         document.querySelector('.setup').classList.add('hidden');
         document.querySelector('.game').classList.remove('hidden');
         clearPersistentWords();
@@ -217,8 +228,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Añade las clases 'selected' a la celda actual
+        // Añade las clases 'selected' y 'bold' a la celda actual
         cell.classList.add('selected');
+        cell.classList.add('bold');
         selectedCells.push(cell);
         currentWord += cell.textContent;
         selectedWordsDisplay.textContent = currentWord;
@@ -228,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var adjacentCells = getAdjacentCells(cell);
             adjacentCells.forEach(adjacentCell => {
                 if (!selectedCells.includes(adjacentCell)) {
+                    adjacentCell.classList.add('selectable');
                     adjacentCell.classList.add('highlight'); // Clase para resaltar temporalmente
                 }
             });
@@ -298,6 +311,9 @@ document.addEventListener('DOMContentLoaded', function () {
             clearBoard(); // Limpiar todas las casillas después de enviar una palabra (tanto válida como no válida)
         });
     }
+
+    // Evento al hacer clic en el botón de enviar palabra
+    wordSubmitButton.addEventListener('click', submitWord);
     
     function clearBoard() {
         var allCells = Array.from(board.children);
@@ -311,6 +327,9 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedWordsDisplay.textContent = '';
         currentWord = '';
     }
+
+    // Evento al hacer clic en el botón de limpiar
+    clearGameButton.addEventListener('click', clearBoard);
 
     // Muestra un mensaje de puntaje para la palabra ingresada
     function showScoreMessage(word, points, isPositive) {
@@ -357,6 +376,124 @@ document.addEventListener('DOMContentLoaded', function () {
         if (length === 5) return 2;
         if (length === 3 || length === 4) return 1;
         return 0;
+    }
+
+    // Función para pausar el cronómetro
+    function pauseTimer() {
+        clearInterval(interval);
+    }
+
+    // Función para reanudar el cronómetro
+    function resumeTimer() {
+        interval = setInterval(updateTimer, 1000);
+    }
+
+    // Función para reiniciar el juego
+    function resetGame() {
+        clearInterval(interval);
+        currentWord = '';
+        selectedCells = [];
+        submittedWords = [];
+        totalScore = 0;
+        scoreDisplay.textContent = `Total: ${totalScore}`;
+        clearBoard(); // Limpia el tablero
+        var setupElements = document.getElementsByClassName('setup');
+        if (setupElements.length > 0) {
+            setupElements[0].classList.remove('hidden');
+        }
+        var gameElements = document.getElementsByClassName('game');
+        if (gameElements.length > 0) {
+            gameElements[0].classList.add('hidden');
+        }
+        timerDisplay.textContent = '';
+        playerNameInput.value = '';
+        clearPersistentWords();
+        isGameRunning = false;
+    }
+
+    function cancelGame() {
+        pauseTimer(); // Pausa el cronómetro
+    
+        Swal.fire({
+            title: 'Cancelar Juego',
+            text: '¿Quieres cancelar el juego? Tu progreso se perderá.',
+            icon: 'warning',
+            showCancelButton: false,
+            showCloseButton: true,
+            confirmButtonColor: 'rgb(221, 51, 51)',
+            confirmButtonText: 'Sí, cancelar juego'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                resetGame(); // Llama a la función para cancelar el juego
+            } else if (result.dismiss === Swal.DismissReason.close) {
+                resumeTimer(); // Reanuda el cronómetro si se cierra el modal
+            }
+        });
+    }
+
+    // Evento al hacer clic en el botón de cancelar juego
+    cancelGameButton.addEventListener('click', cancelGame);
+
+    // Función para mezclar las letras del tablero
+    function shuffleBoard() {
+        var cells = Array.from(board.children);
+        // Añadir la clase de animación a cada celda
+        cells.forEach(cell => {
+            cell.classList.add('spin');
+        });
+
+        // Esperar a que la animación termine para mezclar las letras y quitar la clase
+        setTimeout(() => {
+            var shuffledLetters = cells.map(cell => cell.textContent).sort(() => Math.random() - 0.5);
+            cells.forEach((cell, index) => {
+                cell.textContent = shuffledLetters[index];
+                cell.classList.remove('spin');
+            });
+            clearBoard(); // Limpia todas las celdas seleccionadas
+        }, 500); // Duración de la animación en milisegundos
+    }
+
+    // Evento al hacer clic en el botón de mezclar tablero
+    shuffleBoardButton.addEventListener('click', shuffleBoard);
+
+    // Limpia todos los elementos y reinicia el juego
+    function clearGame() {
+        clearInterval(interval);
+        playerNameInput.value = '';
+        selectedWordsDisplay.textContent = '';
+        submittedWordsDisplay.textContent = '';
+        clearBoard();
+        initBoard();
+    }
+
+    // Actualiza el temporizador cada segundo
+    function updateTimer() {
+        if (timeRemaining <= 0) {
+            clearInterval(interval);
+            Swal.fire({
+                title: 'El tiempo se acabó',
+                text: `El juego ha terminado. Puntaje obtenido: ${totalScore}`,
+                icon: 'info',
+                confirmButtonText: 'Volver a intentarlo',
+                showCloseButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    clearGame(); // Limpia todo el juego
+                    startGame();
+                } else if (result.dismiss === Swal.DismissReason.close) {
+                    resetGame(); // Vuelve al menú principal
+                }
+            });
+            saveResult();
+            return;
+        }
+        timeRemaining--;
+        timerDisplay.textContent = timeRemaining;
+        if (timeRemaining <= 10) {
+            timerDisplay.classList.add('warning');
+        } else {
+            timerDisplay.classList.remove('warning');
+        }
     }
 
     // Muestra un mensaje de error temporal
