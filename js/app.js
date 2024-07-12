@@ -59,12 +59,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleClickOutsideMenu(event) {
         if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
             menu.classList.remove('show');
+            menu.classList.add('hidden');
         }
     }
 
     // Evento para mostrar u ocultar el menú lateral
     menuToggle.addEventListener('click', function () {
         if (!isGameRunning) {
+            menu.classList.remove('hidden');
             menu.classList.toggle('show');
         }
     });
@@ -72,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Evento para cerrar el menú lateral
     menuClose.addEventListener('click', function () {
         menu.classList.remove('show');
+        menu.classList.add('hidden');
     });
 
     // Evento para manejar el clic fuera del menú lateral

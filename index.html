@@ -60,39 +60,44 @@
 
         <!-- Contenedor del juego -->
         <section class="game hidden">
-            <!-- Casillas 4x4 del juego -->
-            <div id="board" class="board"></div>
-            <!-- Tiempo de juego -->
-            <div id="timer" class="timer">Tiempo: <span id="time">0</span> segundos</div>
-            <!-- Palabras seleccionadas -->
-            <div id="selected-words" class="selected-words"></div>
-            <!-- Contenedor para mostrar mensajes de error -->
-            <div id="error-message" class="error-message hidden">La palabra no es válida</div>
-            <!-- Botones de enviar, mezclar, limpiar y cancelar -->
-            <div class="button-container">
-                <button id="word-submit" class="game-button word-submit">
-                    <span class="icon-mobile"><i class="fas fa-paper-plane"></i></span>
-                    <span class="icon-desktop">Enviar</span>
-                </button>
-                <button id="shuffle-board" class="game-button shuffle-board">
-                    <span class="icon-mobile"><i class="fas fa-random"></i></span>
-                    <span class="icon-desktop">Mezclar</span>
-                </button>
-                <button id="clear-selection" class="game-button clear-selection">
-                    <span class="icon-mobile"><i class="fas fa-eraser"></i></span>
-                    <span class="icon-desktop">Limpiar</span>
-                </button>
-                <button id="cancel-game" class="game-button cancel-game">
-                    <span class="icon-mobile"><i class="fas fa-times"></i></span>
-                    <span class="icon-desktop">Cancelar</span>
-                </button>
-            </div>            
+            <div class="left-container"></div>
+            <div class="center-container">
+                <!-- Casillas 4x4 del juego -->
+                <div id="board" class="board"></div>
+                <!-- Tiempo de juego -->
+                <div id="timer" class="timer">Tiempo: <span id="time">0</span> segundos</div>
+                <!-- Palabras seleccionadas -->
+                <div id="selected-words" class="selected-words"></div>
+                <!-- Contenedor para mostrar mensajes de error -->
+                <div id="error-message" class="error-message hidden">La palabra no es válida</div>
+                <!-- Botones de enviar, mezclar, limpiar y cancelar -->
+                <div class="button-container">
+                    <button id="word-submit" class="game-button word-submit">
+                        <span class="icon-mobile"><i class="fas fa-paper-plane"></i></span>
+                        <span class="icon-desktop">Enviar</span>
+                    </button>
+                    <button id="shuffle-board" class="game-button shuffle-board">
+                        <span class="icon-mobile"><i class="fas fa-random"></i></span>
+                        <span class="icon-desktop">Mezclar</span>
+                    </button>
+                    <button id="clear-selection" class="game-button clear-selection">
+                        <span class="icon-mobile"><i class="fas fa-eraser"></i></span>
+                        <span class="icon-desktop">Limpiar</span>
+                    </button>
+                    <button id="cancel-game" class="game-button cancel-game">
+                        <span class="icon-mobile"><i class="fas fa-times"></i></span>
+                        <span class="icon-desktop">Cancelar</span>
+                    </button>
+                </div>            
+            </div>
             <!-- Contenedor de palabras enviadas -->
-            <div id="submitted-words" class="submitted-words"></div>
-            <!-- Puntaje -->
-            <div id="score-display" class="score-display">0</div>
-            <!-- Contendor persistente de palabras enviadas -->
-            <div class="persistent-submitted-words"></div>
+            <div class="right-container">
+                <div id="submitted-words" class="submitted-words"></div>
+                <!-- Puntaje -->
+                <div id="score-display" class="score-display">0</div>
+                <!-- Contendor persistente de palabras enviadas -->
+                <div class="persistent-submitted-words"></div>
+            </div>
         </section>
     </main>        
 
