@@ -444,5 +444,10 @@ footer a {
 
     footer a {
         font-size: 18px;
+        transition: color 0.3s, transform 0.3s;
+    }
+
+    footer a:hover {
+        color: rgb(0, 110, 190);
     }
 }
