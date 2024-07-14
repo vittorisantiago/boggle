@@ -4,35 +4,39 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Contacto</title>
+        <link rel="stylesheet" href="./css/normalize.css">
         <link rel="stylesheet" href="./css/contact-styles.css">
+        <link rel="icon" href="./img/boggle.ico" type="image/x-icon">
+        <!-- FontAwesome para iconos -->
         <script src="https://kit.fontawesome.com/6e6d0e2c72.js" crossorigin="anonymous"></script>
+        <!-- SweetAlert para mensajes modeles -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
         <div id="contact-container">
             <header>
                 <div class="header-logo-container">
-                    <a href="index.html">
-                        <img src="img/Logo.png" alt="Logo BOGGLE">
+                    <a href="./index.html">
+                        <img src="./img/Logo.png" alt="Logo BOGGLE">
                     </a>
                 </div>
             </header>
             <main>
                 <form id="contact-form">
                     <h2>Contáctanos</h2>
-                    <label for="name">Nombre*:</label>
+                    <label for="name">Nombre: *</label>
                     <input type="text" id="name" name="name" required>
-                    <label for="email">Correo electrónico*:</label>
+                    <label for="email">Correo electrónico: *</label>
                     <input type="email" id="email" name="email" required>
-                    <label for="message">Mensaje*:</label>
+                    <label for="message">Mensaje: *</label>
                     <textarea id="message" name="message" required></textarea>
                     <button type="submit">Enviar</button>
                 </form>
             </main>
             <footer>
-                <a href="https://github.com/tu-github" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://github.com/vittorisantiago/boggle" target="_blank"><i class="fab fa-github"></i> GitHub</a>
             </footer>
         </div>
-
         <script src="./js/contact.js"></script>
     </body>
 </html>

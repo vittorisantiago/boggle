@@ -1,6 +1,6 @@
 # Boggle
 
-![Boggle logo](https://i.postimg.cc/ydchvxYD/Logo.png)
+[![Logo.png](https://i.postimg.cc/yYYTTdsb/Logo.png)](https://postimg.cc/Sj38SmX6)
 
 Boggle es un emocionante juego de palabras donde tu habilidad para formar palabras se enfrenta al tiempo. ¡Demuestra tu destreza y encuentra la mayor cantidad de palabras posibles antes de que se agote el tiempo!
 

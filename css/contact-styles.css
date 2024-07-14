@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 /* Resetear CSS */
 * {
     margin: 0;
@@ -22,6 +24,7 @@ header {
     border-bottom: 1px solid rgb(204, 204, 204);
     color: var(--text-color);
 }
+
 .header-logo-container {
     position: absolute;
     left: 50%;
@@ -29,6 +32,7 @@ header {
     max-width: 150px;
     transform: translate(-50%, -50%);
 }
+
 header img {
     display: block;
     max-width: 100%;
@@ -39,58 +43,59 @@ body {
     font-family: 'Montserrat', sans-serif;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
 }
 
-main {
-    margin: 20px;
+#contact-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    flex: 1;
 }
 
-#contact-form{
+main {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    margin: 20px;
+}
+
+#contact-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 60%;
+    width: 80%;
 }
 
 #contact-form button {
     border: none;
-    width: 25%;
     padding: 16px 32px;
-    border-radius: 20px;
+    border-radius: 15px;
     background-color: var(--primary-color);
     color: rgb(255, 255, 255);
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     font-size: 16px;
     text-align: center;
+    margin: 0 auto;
 }
 
-/* Estilo para los inputs */
-input {
+input, textarea {
     border: none;
-    background-color: #d3d3d3; /* gris claro */
+    background-color: rgb(211, 211, 211);
     padding: 10px;
     font-size: 16px;
     outline: none;
-  }
-  
-/* Estilo para el textarea */
+    border-radius: 5px;
+}
+
 textarea {
-    border: none;
-    background-color: #d3d3d3; /* gris claro */
-    padding: 10px;
-    font-size: 16px;
-    outline: none;
     resize: none; /* Evita que el textarea sea redimensionable */
     width: 100%; /* Ajusta según sea necesario */
     height: 200px; /* Ajusta según sea necesario */
 }
   
-
 footer {
     padding: 48px;
     background-color: var(--bg-color-footer);
@@ -100,12 +105,46 @@ footer {
 .footer-content {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 16px;
 }
 
 footer a {
     margin: 0 24px;
     color: var(--primary-color);
     text-decoration: none;
+}
+
+@media (min-width: 768px) {
+
+    main {
+        margin: 50px;
+    }
+
+    #contact-form {
+        max-width: 1000px;
+    }
+
+    #contact-form h2 {
+        margin-bottom: 10px;
+    }
+
+    #contact-form button {
+        width: 200px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    #contact-form button:hover {
+        background-color: rgb(0, 110, 190);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px); /* Ligeramente mover hacia arriba en hover */
+    }
+
+    footer a {
+        transition: color 0.3s, transform 0.3s;
+    }
+    
+    footer a:hover {
+        color: rgb(0, 110, 190);
+    }
 }
