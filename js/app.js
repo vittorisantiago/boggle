@@ -160,14 +160,14 @@ document.addEventListener('DOMContentLoaded', function () {
         var difficulties = ['easy', 'hard'];
         var rankingContainer = document.createElement('div');
     
-        difficulties.forEach(difficulty => {
+        difficulties.forEach(function(difficulty) {
             var difficultyTitle = document.createElement('h3');
             difficultyTitle.textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1) + ' Mode';
             rankingContainer.appendChild(difficultyTitle);
     
-            [1, 2, 3].forEach(time => {
-                var filteredResults = results.filter(result => result.difficulty === difficulty && result.time == time)
-                    .sort((a, b) => b.score - a.score)
+            [1, 2, 3].forEach(function(time) {
+                var filteredResults = results.filter(function(result){ result.difficulty === difficulty && result.time == time;})
+                    .sort(function(a, b){ b.score - a.score})
                     .slice(0, 3);
     
                 var timeTitle = document.createElement('h4');
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
                 if (filteredResults.length > 0) {
                     var ul = document.createElement('ul');
-                    filteredResults.forEach(result => {
+                    filteredResults.forEach(function(result) {
                         var li = document.createElement('li');
                         li.textContent = `${result.player}: ${result.score} puntos (${result.date})`;
                         ul.appendChild(li);
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Restablece el color original de todas las celdas adyacentes no seleccionadas
         var allCells = Array.from(board.children);
-        allCells.forEach(adjacentCell => {
+        allCells.forEach(function(adjacentCell) {
             if (!selectedCells.includes(adjacentCell)) {
                 adjacentCell.classList.remove('highlight');
             }
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (difficulty === 'easy') {
             // Obtiene las celdas adyacentes y marca las seleccionables
             var adjacentCells = getAdjacentCells(cell);
-            adjacentCells.forEach(adjacentCell => {
+            adjacentCells.forEach(function(adjacentCell) {
                 if (!selectedCells.includes(adjacentCell)) {
                     adjacentCell.classList.add('selectable');
                     adjacentCell.classList.add('highlight'); // Clase para resaltar temporalmente
@@ -317,15 +317,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Valida y procesa la palabra enviada por el jugador
     function submitWord() {
+        wordSubmitButton.disabled = true;
         if (currentWord.length < 3) {
             showErrorMessage('La palabra no es válida');
             clearBoard(); // Limpiar todas las casillas cuando la palabra no es válida
+            wordSubmitButton.disabled = false; 
             return;
         }
     
         if (submittedWords.includes(currentWord)) {
             showErrorMessage('La palabra ya ha sido enviada');
             clearBoard(); // Limpiar todas las casillas cuando la palabra ya ha sido enviada
+            wordSubmitButton.disabled = false; 
             return;
         }
     
@@ -345,6 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
             scoreDisplay.textContent = `Total: ${totalScore}`; // Mostrar el puntaje total actualizado
             submittedWords.push(currentWord);
             clearBoard(); // Limpiar todas las casillas después de enviar una palabra (tanto válida como no válida)
+            wordSubmitButton.disabled = false; 
         });
     }
 
@@ -353,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function clearBoard() {
         var allCells = Array.from(board.children);
-        allCells.forEach(cell => {
+        allCells.forEach(function(cell){
             cell.classList.remove('selected');
             cell.classList.remove('bold');
             cell.classList.remove('selectable');
@@ -374,9 +378,9 @@ document.addEventListener('DOMContentLoaded', function () {
         scoreMessage.classList.add(isPositive ? 'positive-score' : 'negative-score');
         submittedWordsDisplay.appendChild(scoreMessage);
 
-        setTimeout(() => {
+        setTimeout(function() {
             scoreMessage.classList.add('fade-out');
-            setTimeout(() => {
+            setTimeout(function() {
                 var persistentWord = document.createElement('div');
                 persistentWord.textContent = word;
                 persistentWord.classList.add(isPositive ? 'positive-score' : 'negative-score');
@@ -390,16 +394,16 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateWord(word, callback) {
         var url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
         fetch(url)
-            .then(response => {
+            .then(function(response) {
                 if (!response.ok) {
                     throw new Error('Palabra no encontrada');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(function(data) {
                 callback(true);
             })
-            .catch(error => {
+            .catch(function(error) {
                 callback(false);
             });
     }
@@ -457,8 +461,9 @@ document.addEventListener('DOMContentLoaded', function () {
             showCancelButton: false,
             showCloseButton: true,
             confirmButtonColor: 'rgb(221, 51, 51)',
-            confirmButtonText: 'Sí, cancelar juego'
-        }).then((result) => {
+            confirmButtonText: 'Sí, cancelar juego',
+            allowOutsideClick: false
+        }).then(function(result) {
             if (result.isConfirmed) {
                 resetGame(); // Llama a la función para cancelar el juego
             } else if (result.dismiss === Swal.DismissReason.close) {
@@ -474,14 +479,18 @@ document.addEventListener('DOMContentLoaded', function () {
     function shuffleBoard() {
         var cells = Array.from(board.children);
         // Añadir la clase de animación a cada celda
-        cells.forEach(cell => {
+        cells.forEach(function(cell) {
             cell.classList.add('spin');
         });
 
         // Esperar a que la animación termine para mezclar las letras y quitar la clase
-        setTimeout(() => {
-            var shuffledLetters = cells.map(cell => cell.textContent).sort(() => Math.random() - 0.5);
-            cells.forEach((cell, index) => {
+        setTimeout(function() {
+            var shuffledLetters = cells.map(function(cell){
+                return cell.textContent;
+        }).sort(function(){
+            return Math.random() - 0.5;
+        });
+            cells.forEach(function(cell, index) {
                 cell.textContent = shuffledLetters[index];
                 cell.classList.remove('spin');
             });
@@ -511,8 +520,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 text: `El juego ha terminado. Puntaje obtenido: ${totalScore}`,
                 icon: 'info',
                 confirmButtonText: 'Volver a intentarlo',
-                showCloseButton: true
-            }).then((result) => {
+                showCloseButton: true,
+                allowOutsideClick: false
+            }).then(function(result) {
                 if (result.isConfirmed) {
                     clearGame(); // Limpia todo el juego
                     startGame();
