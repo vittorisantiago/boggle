@@ -7,6 +7,37 @@ document.addEventListener('DOMContentLoaded', function () {
     var menuClose = document.getElementById('menu-close');
     var isGameRunning = false;
 
+    // Elemento del DOM para el tema
+    var themeToggle = document.getElementById('theme-toggle');
+    var icon = themeToggle.getElementsByTagName('i')[0]; // Selecciona el primer <i> dentro de themeToggle
+    var body = document.body;
+    
+    // Elementos del DOM para la dificultad
+    var difficultyToggle = document.getElementById('difficulty-toggle');
+    var difficultyOptions = document.getElementById('difficulty-options');
+    var difficultyInputs = document.getElementsByName('difficulty');
+    var difficulty = 'easy';
+    
+    // Elemento del DOM para el ranking
+    var rankingToggle = document.getElementById('ranking-toggle');
+    
+    // Elementos del DOM para el las intrucciones
+    var instructions = document.getElementById('intructions');
+    var instruction = `
+    <h3>Introducción</h3>
+    <p>Boggle es un juego de palabras en el que intentas encontrar tantas palabras como puedas en una cuadrícula de 4x4 letras dispuestas al azar. Tienes un tiempo limitado para jugar.</p>
+    <h3>Reglas</h3>
+    <ul style="text-align: left;">
+    <li>Las palabras deben tener al menos 3 letras.</li>
+    <li>Cada letra después de la primera debe estar junto a la anterior (horizontal, vertical o diagonalmente).</li>
+    <li>No puedes usar la misma casilla más de una vez en una palabra.</li>
+    <li>Se permiten diferentes formas de la misma palabra (singulares, plurales, etc.), pero no nombres propios, artículos ni pronombres.</li>
+    <li>Puedes formar palabras dentro de otras palabras (como "casa" y "casamiento").</li>
+    <li>Las palabras deben ser reales y existir en el diccionario. Si ingresas una palabra que no es real, recibirás una penalización.</li>
+    </ul>
+    <p>¡Disfruta jugando Boggle y demuestra tu habilidad para encontrar palabras!</p>
+    `;
+
     // Elementos del DOM para el tablero
     var startGameButton = document.getElementById('start-game');
     startGameButton.disabled = false;
@@ -21,20 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
     var currentWord = '';
     var selectedCells = [];
-
-    // Elemento del DOM para el tema
-    var themeToggle = document.getElementById('theme-toggle');
-    var icon = themeToggle.getElementsByTagName('i')[0]; // Selecciona el primer <i> dentro de themeToggle
-    var body = document.body;
-
-    // Elementos del DOM para la dificultad y el ranking
-    var difficultyToggle = document.getElementById('difficulty-toggle');
-    var difficultyOptions = document.getElementById('difficulty-options');
-    var difficultyInputs = document.getElementsByName('difficulty');
-    var difficulty = 'easy';
-
-    // Elemento del DOM para el ranking
-    var rankingToggle = document.getElementById('ranking-toggle');
 
     // Elemento del DOM para el envio de palabras y puntaje
     var wordSubmitButton = document.getElementById('word-submit');
@@ -55,38 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var interval;
     var timeRemaining;
 
-    // Elementos del DOM para el las intrucciones
-    var instructions = document.getElementById('intructions');
-    var instruction = `
-        <h3>Introducción</h3>
-        <p>Boggle es un juego de palabras en el que intentas encontrar tantas palabras como puedas en una cuadrícula de 4x4 letras dispuestas al azar. Tienes un tiempo limitado para jugar.</p>
-        <h3>Reglas</h3>
-        <ul style="text-align: left;">
-            <li>Las palabras deben tener al menos 3 letras.</li>
-            <li>Cada letra después de la primera debe estar junto a la anterior (horizontal, vertical o diagonalmente).</li>
-            <li>No puedes usar la misma casilla más de una vez en una palabra.</li>
-            <li>Se permiten diferentes formas de la misma palabra (singulares, plurales, etc.), pero no nombres propios, artículos ni pronombres.</li>
-            <li>Puedes formar palabras dentro de otras palabras (como "casa" y "casamiento").</li>
-            <li>Las palabras deben ser reales y existir en el diccionario. Si ingresas una palabra que no es real, recibirás una penalización.</li>
-        </ul>
-        <p>¡Disfruta jugando Boggle y demuestra tu habilidad para encontrar palabras!</p>
-    `;
-
-    // Evento para mostrar las instrucciones
-    instructions.addEventListener('click', function () {
-        Swal.fire({
-            title: 'Instrucciones',
-            html: instruction,
-            confirmButtonText: 'Cerrar',
-            width: 600,
-            padding: '48px',
-            background: isDarkMode() ? 'rgb(44, 62, 80)' : 'rgb(255, 255, 255)',
-            customClass: {
-                title: isDarkMode() ? 'swal2-title-dark' : '',
-                htmlContainer: isDarkMode() ? 'swal2-html-container-dark' : ''
-            }
-        });
-    });
+    // Funciones del DOM
 
     // Cierra el menú lateral si se hace clic fuera de él
     function handleClickOutsideMenu(event) {
@@ -95,23 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
             menu.classList.add('hidden');
         }
     }
-
-    // Evento para mostrar u ocultar el menú lateral
-    menuToggle.addEventListener('click', function () {
-        if (!isGameRunning) {
-            menu.classList.remove('hidden');
-            menu.classList.toggle('show');
-        }
-    });
-
-    // Evento para cerrar el menú lateral
-    menuClose.addEventListener('click', function () {
-        menu.classList.remove('show');
-        menu.classList.add('hidden');
-    });
-
-    // Evento para manejar el clic fuera del menú lateral
-    document.addEventListener('click', handleClickOutsideMenu);
 
     // Función para verificar si el modo oscuro está activo
     function isDarkMode() {
@@ -133,20 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
         themeToggle.childNodes[1].textContent = text;
     }
 
-    // Evento para alternar el tema oscuro o claro
-    themeToggle.addEventListener('click', function (event) {
-        event.preventDefault();  // Evita que el enlace realice la acción por defecto
-        body.classList.toggle('dark-mode');
-        updateThemeToggle();
-    });
-
     // Inicializar el estado del tema al cargar la página
     updateThemeToggle();
-
-    // Evento para mostrar u ocultar las opciones de dificultad
-    difficultyToggle.addEventListener('click', function () {
-        difficultyOptions.classList.toggle('hidden');
-    });
 
     // Evento para cambiar la dificultad seleccionada
     for (var i = 0; i < difficultyInputs.length; i++) {
@@ -160,14 +117,14 @@ document.addEventListener('DOMContentLoaded', function () {
         var difficulties = ['easy', 'hard'];
         var rankingContainer = document.createElement('div');
     
-        difficulties.forEach(difficulty => {
+        difficulties.forEach(function(difficulty) {
             var difficultyTitle = document.createElement('h3');
             difficultyTitle.textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1) + ' Mode';
             rankingContainer.appendChild(difficultyTitle);
     
-            [1, 2, 3].forEach(time => {
-                var filteredResults = results.filter(result => result.difficulty === difficulty && result.time == time)
-                    .sort((a, b) => b.score - a.score)
+            [1, 2, 3].forEach(function(time) {
+                var filteredResults = results.filter(function(result){ result.difficulty === difficulty && result.time == time;})
+                    .sort(function(a, b){ b.score - a.score})
                     .slice(0, 3);
     
                 var timeTitle = document.createElement('h4');
@@ -176,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
                 if (filteredResults.length > 0) {
                     var ul = document.createElement('ul');
-                    filteredResults.forEach(result => {
+                    filteredResults.forEach(function(result) {
                         var li = document.createElement('li');
                         li.textContent = `${result.player}: ${result.score} puntos (${result.date})`;
                         ul.appendChild(li);
@@ -202,18 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }    
-
-    // Evento para mostrar el ranking de los jugadores
-    rankingToggle.addEventListener('click', showRankings);
-
-    //Iniciar tablero
-    startGameButton.addEventListener('click', function () {
-        if (playerNameInput.value.trim().length < 3) {
-            Swal.fire('Error', 'El nombre del jugador debe tener al menos 3 caracteres', 'error');
-        } else {
-            startGame();
-        }
-    });
 
     function startGame() {
         timerDisplay.textContent = '';
@@ -258,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Restablece el color original de todas las celdas adyacentes no seleccionadas
         var allCells = Array.from(board.children);
-        allCells.forEach(adjacentCell => {
+        allCells.forEach(function(adjacentCell) {
             if (!selectedCells.includes(adjacentCell)) {
                 adjacentCell.classList.remove('highlight');
             }
@@ -274,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (difficulty === 'easy') {
             // Obtiene las celdas adyacentes y marca las seleccionables
             var adjacentCells = getAdjacentCells(cell);
-            adjacentCells.forEach(adjacentCell => {
+            adjacentCells.forEach(function(adjacentCell) {
                 if (!selectedCells.includes(adjacentCell)) {
                     adjacentCell.classList.add('selectable');
                     adjacentCell.classList.add('highlight'); // Clase para resaltar temporalmente
@@ -317,15 +262,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Valida y procesa la palabra enviada por el jugador
     function submitWord() {
+        wordSubmitButton.disabled = true;
         if (currentWord.length < 3) {
             showErrorMessage('La palabra no es válida');
             clearBoard(); // Limpiar todas las casillas cuando la palabra no es válida
+            wordSubmitButton.disabled = false; 
             return;
         }
     
         if (submittedWords.includes(currentWord)) {
             showErrorMessage('La palabra ya ha sido enviada');
             clearBoard(); // Limpiar todas las casillas cuando la palabra ya ha sido enviada
+            wordSubmitButton.disabled = false; 
             return;
         }
     
@@ -345,61 +293,24 @@ document.addEventListener('DOMContentLoaded', function () {
             scoreDisplay.textContent = `Total: ${totalScore}`; // Mostrar el puntaje total actualizado
             submittedWords.push(currentWord);
             clearBoard(); // Limpiar todas las casillas después de enviar una palabra (tanto válida como no válida)
+            wordSubmitButton.disabled = false; 
         });
     }
-
-    // Evento al hacer clic en el botón de enviar palabra
-    wordSubmitButton.addEventListener('click', submitWord);
     
-    function clearBoard() {
-        var allCells = Array.from(board.children);
-        allCells.forEach(cell => {
-            cell.classList.remove('selected');
-            cell.classList.remove('bold');
-            cell.classList.remove('selectable');
-            cell.classList.remove('highlight');
-        });
-        selectedCells = [];
-        selectedWordsDisplay.textContent = '';
-        currentWord = '';
-    }
-
-    // Evento al hacer clic en el botón de limpiar
-    clearGameButton.addEventListener('click', clearBoard);
-
-    // Muestra un mensaje de puntaje para la palabra ingresada
-    function showScoreMessage(word, points, isPositive) {
-        var scoreMessage = document.createElement('div');
-        scoreMessage.textContent = `${word}: ${isPositive ? `+${points}` : `${points}`} puntos`;
-        scoreMessage.classList.add(isPositive ? 'positive-score' : 'negative-score');
-        submittedWordsDisplay.appendChild(scoreMessage);
-
-        setTimeout(() => {
-            scoreMessage.classList.add('fade-out');
-            setTimeout(() => {
-                var persistentWord = document.createElement('div');
-                persistentWord.textContent = word;
-                persistentWord.classList.add(isPositive ? 'positive-score' : 'negative-score');
-                document.querySelector('.persistent-submitted-words').appendChild(persistentWord);
-                scoreMessage.remove();
-            }, 1000);
-        }, 2000);
-    }
-
     // Valida si una palabra es válida usando una API externa
     function validateWord(word, callback) {
         var url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
         fetch(url)
-            .then(response => {
+            .then(function(response) {
                 if (!response.ok) {
                     throw new Error('Palabra no encontrada');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(function(data) {
                 callback(true);
             })
-            .catch(error => {
+            .catch(function(error) {
                 callback(false);
             });
     }
@@ -412,6 +323,38 @@ document.addEventListener('DOMContentLoaded', function () {
         if (length === 5) return 2;
         if (length === 3 || length === 4) return 1;
         return 0;
+    } 
+    
+    function clearBoard() {
+        var allCells = Array.from(board.children);
+        allCells.forEach(function(cell){
+            cell.classList.remove('selected');
+            cell.classList.remove('bold');
+            cell.classList.remove('selectable');
+            cell.classList.remove('highlight');
+        });
+        selectedCells = [];
+        selectedWordsDisplay.textContent = '';
+        currentWord = '';
+    }
+
+    // Muestra un mensaje de puntaje para la palabra ingresada
+    function showScoreMessage(word, points, isPositive) {
+        var scoreMessage = document.createElement('div');
+        scoreMessage.textContent = `${word}: ${isPositive ? `+${points}` : `${points}`} puntos`;
+        scoreMessage.classList.add(isPositive ? 'positive-score' : 'negative-score');
+        submittedWordsDisplay.appendChild(scoreMessage);
+
+        setTimeout(function() {
+            scoreMessage.classList.add('fade-out');
+            setTimeout(function() {
+                var persistentWord = document.createElement('div');
+                persistentWord.textContent = word;
+                persistentWord.classList.add(isPositive ? 'positive-score' : 'negative-score');
+                document.querySelector('.persistent-submitted-words').appendChild(persistentWord);
+                scoreMessage.remove();
+            }, 1000);
+        }, 2000);
     }
 
     // Función para pausar el cronómetro
@@ -457,8 +400,9 @@ document.addEventListener('DOMContentLoaded', function () {
             showCancelButton: false,
             showCloseButton: true,
             confirmButtonColor: 'rgb(221, 51, 51)',
-            confirmButtonText: 'Sí, cancelar juego'
-        }).then((result) => {
+            confirmButtonText: 'Sí, cancelar juego',
+            allowOutsideClick: false
+        }).then(function(result) {
             if (result.isConfirmed) {
                 resetGame(); // Llama a la función para cancelar el juego
             } else if (result.dismiss === Swal.DismissReason.close) {
@@ -467,30 +411,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Evento al hacer clic en el botón de cancelar juego
-    cancelGameButton.addEventListener('click', cancelGame);
-
     // Función para mezclar las letras del tablero
     function shuffleBoard() {
         var cells = Array.from(board.children);
         // Añadir la clase de animación a cada celda
-        cells.forEach(cell => {
+        cells.forEach(function(cell) {
             cell.classList.add('spin');
         });
 
         // Esperar a que la animación termine para mezclar las letras y quitar la clase
-        setTimeout(() => {
-            var shuffledLetters = cells.map(cell => cell.textContent).sort(() => Math.random() - 0.5);
-            cells.forEach((cell, index) => {
+        setTimeout(function() {
+            var shuffledLetters = cells.map(function(cell){
+                return cell.textContent;
+        }).sort(function(){
+            return Math.random() - 0.5;
+        });
+            cells.forEach(function(cell, index) {
                 cell.textContent = shuffledLetters[index];
                 cell.classList.remove('spin');
             });
             clearBoard(); // Limpia todas las celdas seleccionadas
         }, 500); // Duración de la animación en milisegundos
     }
-
-    // Evento al hacer clic en el botón de mezclar tablero
-    shuffleBoardButton.addEventListener('click', shuffleBoard);
 
     // Limpia todos los elementos y reinicia el juego
     function clearGame() {
@@ -511,8 +453,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 text: `El juego ha terminado. Puntaje obtenido: ${totalScore}`,
                 icon: 'info',
                 confirmButtonText: 'Volver a intentarlo',
-                showCloseButton: true
-            }).then((result) => {
+                showCloseButton: true,
+                allowOutsideClick: false
+            }).then(function(result) {
                 if (result.isConfirmed) {
                     clearGame(); // Limpia todo el juego
                     startGame();
@@ -560,5 +503,75 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         localStorage.setItem('results', JSON.stringify(results));
     }
-});
 
+    // Eventos del DOM
+
+    // Evento para mostrar u ocultar el menú lateral
+    menuToggle.addEventListener('click', function () {
+        if (!isGameRunning) {
+            menu.classList.remove('hidden');
+            menu.classList.toggle('show');
+        }
+    });
+    
+    // Evento para cerrar el menú lateral
+    menuClose.addEventListener('click', function () {
+        menu.classList.remove('show');
+        menu.classList.add('hidden');
+    });
+    
+    // Evento para manejar el clic fuera del menú lateral
+    document.addEventListener('click', handleClickOutsideMenu);
+    
+    // Evento para alternar el tema oscuro o claro
+    themeToggle.addEventListener('click', function (event) {
+        event.preventDefault();  // Evita que el enlace realice la acción por defecto
+        body.classList.toggle('dark-mode');
+        updateThemeToggle();
+    });
+    
+    // Evento para mostrar u ocultar las opciones de dificultad
+    difficultyToggle.addEventListener('click', function () {
+        difficultyOptions.classList.toggle('hidden');
+    });
+
+    // Evento para mostrar el ranking de los jugadores
+    rankingToggle.addEventListener('click', showRankings);
+
+    // Evento para mostrar las instrucciones
+    instructions.addEventListener('click', function () {
+        Swal.fire({
+            title: 'Instrucciones',
+            html: instruction,
+            confirmButtonText: 'Cerrar',
+            width: 600,
+            padding: '48px',
+            background: isDarkMode() ? 'rgb(44, 62, 80)' : 'rgb(255, 255, 255)',
+            customClass: {
+                title: isDarkMode() ? 'swal2-title-dark' : '',
+                htmlContainer: isDarkMode() ? 'swal2-html-container-dark' : ''
+            }
+        });
+    });
+
+    //Iniciar tablero
+    startGameButton.addEventListener('click', function () {
+        if (playerNameInput.value.trim().length < 3) {
+            Swal.fire('Error', 'El nombre del jugador debe tener al menos 3 caracteres', 'error');
+        } else {
+            startGame();
+        }
+    });
+
+    // Evento al hacer clic en el botón de enviar palabra
+    wordSubmitButton.addEventListener('click', submitWord);
+    
+    // Evento al hacer clic en el botón de mezclar tablero
+    shuffleBoardButton.addEventListener('click', shuffleBoard);
+
+    // Evento al hacer clic en el botón de limpiar
+    clearGameButton.addEventListener('click', clearBoard);
+
+    // Evento al hacer clic en el botón de cancelar juego
+    cancelGameButton.addEventListener('click', cancelGame);
+});
