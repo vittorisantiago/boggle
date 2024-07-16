@@ -23,20 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Elementos del DOM para el las intrucciones
     var instructions = document.getElementById('intructions');
-    var instruction = `
-    <h3>Introducción</h3>
-    <p>Boggle es un juego de palabras en el que intentas encontrar tantas palabras como puedas en una cuadrícula de 4x4 letras dispuestas al azar. Tienes un tiempo limitado para jugar.</p>
-    <h3>Reglas</h3>
-    <ul style="text-align: left;">
-    <li>Las palabras deben tener al menos 3 letras.</li>
-    <li>Cada letra después de la primera debe estar junto a la anterior (horizontal, vertical o diagonalmente).</li>
-    <li>No puedes usar la misma casilla más de una vez en una palabra.</li>
-    <li>Se permiten diferentes formas de la misma palabra (singulares, plurales, etc.), pero no nombres propios, artículos ni pronombres.</li>
-    <li>Puedes formar palabras dentro de otras palabras (como "casa" y "casamiento").</li>
-    <li>Las palabras deben ser reales y existir en el diccionario. Si ingresas una palabra que no es real, recibirás una penalización.</li>
-    </ul>
-    <p>¡Disfruta jugando Boggle y demuestra tu habilidad para encontrar palabras!</p>
-    `;
+    var instructionContent = document.getElementById('instructions-content').innerHTML;
+    var hideInstructions = localStorage.getItem('hideInstructions');
+    var hideInstructionsCheckbox = document.getElementById('hide-instructions-checkbox');
 
     // Elementos del DOM para el tablero
     var startGameButton = document.getElementById('start-game');
@@ -112,25 +101,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Función para mostrar el ranking
     function showRankings() {
         var results = JSON.parse(localStorage.getItem('results') || '[]');
         var difficulties = ['easy', 'hard'];
         var rankingContainer = document.createElement('div');
-    
+
         difficulties.forEach(function(difficulty) {
             var difficultyTitle = document.createElement('h3');
             difficultyTitle.textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1) + ' Mode';
             rankingContainer.appendChild(difficultyTitle);
-    
+
             [1, 2, 3].forEach(function(time) {
-                var filteredResults = results.filter(function(result){ result.difficulty === difficulty && result.time == time;})
-                    .sort(function(a, b){ b.score - a.score})
-                    .slice(0, 3);
-    
+                var filteredResults = results.filter(function(result) {
+                    return result.difficulty === difficulty && result.time == time;
+                }).sort(function(a, b) {
+                    return b.score - a.score;
+                }).slice(0, 3);
+
                 var timeTitle = document.createElement('h4');
                 timeTitle.textContent = `${time} minuto(s)`;
                 rankingContainer.appendChild(timeTitle);
-    
+
                 if (filteredResults.length > 0) {
                     var ul = document.createElement('ul');
                     filteredResults.forEach(function(result) {
@@ -146,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
-    
+
         Swal.fire({
             title: 'Ranking',
             html: rankingContainer.outerHTML,
@@ -158,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 htmlContainer: isDarkMode() ? 'swal2-html-container-dark' : ''
             }
         });
-    }    
+    }
 
     function startGame() {
         timerDisplay.textContent = '';
@@ -170,8 +162,19 @@ document.addEventListener('DOMContentLoaded', function () {
         scoreDisplay.textContent = `Total: ${totalScore}`; // Muestra el puntaje total
         initBoard();
         interval = setInterval(updateTimer, 1000);
-        document.querySelector('.setup').classList.add('hidden');
-        document.querySelector('.game').classList.remove('hidden');
+
+        // Maneja la colección de elementos con la clase 'setup'
+        var setupElements = document.getElementsByClassName('setup');
+        if (setupElements.length > 0) {
+            setupElements[0].classList.add('hidden');
+        }
+
+        // Maneja la colección de elementos con la clase 'game'
+        var gameElements = document.getElementsByClassName('game');
+        if (gameElements.length > 0) {
+            gameElements[0].classList.remove('hidden');
+        }
+
         clearPersistentWords();
         isGameRunning = true;
     }
@@ -191,11 +194,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Maneja el click en una celda del tablero
     function handleCellClick(event) {
         var cell = event.target;
+
         if (selectedCells.includes(cell)) {
             return;
         }
+        
         if (selectedCells.length > 0) {
             var lastCell = selectedCells[selectedCells.length - 1];
+            lastCell.classList.remove('selected-border');
             if (!isAdjacent(lastCell, cell)) {
                 return;
             }
@@ -209,9 +215,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Añade las clases 'selected' y 'bold' a la celda actual
+        // Añade las clases 'selected'
         cell.classList.add('selected');
-        cell.classList.add('bold');
+        cell.classList.add('selected-border');
         selectedCells.push(cell);
         currentWord += cell.textContent;
         selectedWordsDisplay.textContent = currentWord;
@@ -332,6 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cell.classList.remove('bold');
             cell.classList.remove('selectable');
             cell.classList.remove('highlight');
+            cell.classList.remove('selected-border');
         });
         selectedCells = [];
         selectedWordsDisplay.textContent = '';
@@ -351,7 +358,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 var persistentWord = document.createElement('div');
                 persistentWord.textContent = word;
                 persistentWord.classList.add(isPositive ? 'positive-score' : 'negative-score');
-                document.querySelector('.persistent-submitted-words').appendChild(persistentWord);
+                var persistentWordsContainer = document.getElementsByClassName('persistent-submitted-words')[0];
+                persistentWordsContainer.appendChild(persistentWord);
                 scoreMessage.remove();
             }, 1000);
         }, 2000);
@@ -463,7 +471,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     resetGame(); // Vuelve al menú principal
                 }
             });
-            saveResult();
+            saveResult(); // Guarda el resultado del juego
             return;
         }
         timeRemaining--;
@@ -486,10 +494,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 2000);
     }
 
-     // Función para limpiar el cuadro de palabras persistentes
-     function clearPersistentWords() {
-        var persistentContainer = document.querySelector('.persistent-submitted-words');
-        persistentContainer.innerHTML = '';
+    // Función para limpiar el cuadro de palabras persistentes
+    function clearPersistentWords() {
+        var persistentContainers = document.getElementsByClassName('persistent-submitted-words');
+        if (persistentContainers.length > 0) {
+            persistentContainers[0].innerHTML = '';
+        }
     }
 
     function saveResult() {
@@ -538,21 +548,45 @@ document.addEventListener('DOMContentLoaded', function () {
     // Evento para mostrar el ranking de los jugadores
     rankingToggle.addEventListener('click', showRankings);
 
-    // Evento para mostrar las instrucciones
-    instructions.addEventListener('click', function () {
+    // Función para mostrar las instrucciones
+    function showInstructions() {
         Swal.fire({
             title: 'Instrucciones',
-            html: instruction,
+            html: instructionContent,
             confirmButtonText: 'Cerrar',
             width: 600,
             padding: '48px',
             background: isDarkMode() ? 'rgb(44, 62, 80)' : 'rgb(255, 255, 255)',
             customClass: {
                 title: isDarkMode() ? 'swal2-title-dark' : '',
-                htmlContainer: isDarkMode() ? 'swal2-html-container-dark' : ''
+                htmlContainer: isDarkMode() ? 'swal2-html-container-dark' : 'custom-instructions-content'
             }
         });
+    }
+
+    // Mostrar las instrucciones la primera vez que carga la página
+    if (!hideInstructions) {
+        showInstructions();
+    }
+
+    // Evento para mostrar las instrucciones desde el panel lateral
+    instructions.addEventListener('click', function () {
+        showInstructions();
     });
+
+    // Evento para controlar el checkbox de ocultar instrucciones
+    if (hideInstructionsCheckbox) {
+        // Marcamos el checkbox si está guardado en localStorage
+        hideInstructionsCheckbox.checked = hideInstructions === 'true';
+
+        hideInstructionsCheckbox.addEventListener('change', function () {
+            if (hideInstructionsCheckbox.checked) {
+                localStorage.setItem('hideInstructions', 'true'); // Guarda como cadena 'true'
+            } else {
+                localStorage.removeItem('hideInstructions');
+            }
+        });
+    }
 
     //Iniciar tablero
     startGameButton.addEventListener('click', function () {
