@@ -20,7 +20,7 @@
                 <button id="menu-toggle" aria-label="Abrir Menú" class="menu-toggle"><i class="fas fa-bars"></i></button>
                 <ul id="menu" class="hidden" aria-labelledby="menu-toggle">
                     <li id="menu-close"><i class="fas fa-times"></i></li>
-                    <li><a href="#" id="theme-toggle"><i class="fas fa-sun"></i> Tema Claro</a></li>
+                    <li><a href="#" id="intructions"><i class="fa-solid fa-book"></i> Cómo Jugar</a></li>
                     <li id="difficulty-toggle">
                         <span><i class="fas fa-tasks"></i> Elegir Dificultad</span>
                         <ul id="difficulty-options" class="hidden">
@@ -29,7 +29,7 @@
                         </ul>
                     </li>
                     <li><a href="#" id="ranking-toggle"><i class="fas fa-trophy"></i> Ver Ranking</a></li>
-                    <li><a href="#" id="intructions"><i class="fa-solid fa-book"></i> Cómo Jugar</a></li>
+                    <li><a href="#" id="theme-toggle"><i class="fas fa-sun"></i> Tema Claro</a></li>
                 </ul>
             </div>
             <!-- Contenedor del logo -->
@@ -40,6 +40,29 @@
 
         <!-- Contenido principal -->
         <main>
+            <!-- Instrucciones ocultas -->
+            <div id="instructions-content" class="hidden custom-instructions-content">
+                <h3>Introducción</h3>
+                <p>Boggle es un juego de palabras en el que intentas encontrar tantas palabras en <b>inglés</b> como puedas en una cuadrícula de 4x4 letras dispuestas al azar. Tienes un tiempo limitado para jugar.</p>
+                <h3>Reglas</h3>
+                <ul>
+                    <li>Las palabras deben tener al menos 3 letras.</li>
+                    <li>Cada letra después de la primera debe estar junto a la anterior (horizontal, vertical o diagonalmente).</li>
+                    <li>No puedes usar la misma casilla más de una vez en una palabra.</li>
+                    <li>Se permiten diferentes formas de la misma palabra (singulares, plurales, etc.), pero no nombres propios, artículos ni pronombres.</li>
+                    <li>Puedes formar palabras dentro de otras palabras (como "casa" y "casamiento").</li>
+                    <li>Las palabras deben existir en el diccionario. Si ingresas una palabra que no es real, recibirás una penalización.</li>
+                </ul>
+                <h3>Botones del Juego</h3>
+                <ul>
+                    <li><i class="fas fa-paper-plane"></i> <b>Enviar:</b> Envía la palabra seleccionada.</li>
+                    <li><i class="fas fa-random"></i> <b>Mezclar:</b> Mezcla las letras en el tablero.</li>
+                    <li><i class="fas fa-eraser"></i> <b>Limpiar:</b> Limpia la selección actual de letras.</li>
+                    <li><i class="fas fa-times"></i> <b>Cancelar:</b> Cancela el juego actual y regresa a la configuración.</li>
+                </ul>
+                <p>¡Disfruta jugando Boggle y demuestra tu habilidad para encontrar palabras!</p>                
+            </div>
+
             <!-- Sección de configuración -->
             <section class="setup">
                 <div class="input-container">
@@ -55,7 +78,13 @@
                     </select>
                 </div>
                 <div class="button-container">
-                    <button id="start-game" class="game-button" disabled>Iniciar Juego</button>
+                    <button id="start-game" class="game-button">Iniciar Juego</button>
+                </div>
+                <div class="check-container">
+                    <label>
+                        <input type="checkbox" id="hide-instructions-checkbox">
+                        No mostrar más las instrucciones
+                    </label>
                 </div>
             </section>
 

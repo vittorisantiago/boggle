@@ -118,11 +118,15 @@ header img {
     list-style: none;
 }
 
-.swal2-title-dark {
-    color: rgb(255, 255, 255) !important;
+.custom-instructions-content ul li {
+    text-align: left;
 }
 
-.swal2-html-container-dark {
+.custom-instructions-content ul li i {
+    margin-right: 10px;
+}
+
+.swal2-title-dark, .swal2-html-container-dark {
     color: rgb(255, 255, 255) !important;
 }
 
@@ -190,6 +194,19 @@ main {
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
+.check-container {
+    margin-top: 15px;
+}
+
+.check-container label {
+    display: block;
+    font-size: 16px;
+}
+
+.check-container input[type="checkbox"] {
+    margin-right: 10px; /* Espacio entre el checkbox y el texto */
+}
+
 .hidden {
     display: none;
 }
@@ -231,6 +248,10 @@ main {
     font-weight: bold;
 }
 
+.selected-border {
+    border: 2px solid var(--text-color) !important;
+}
+
 .selected-words {
     font-weight: bold;
 }
@@ -270,6 +291,13 @@ main {
 .fade-out {
     transition: opacity 1s ease-out;
     opacity: 0;
+}
+
+.right-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .score-display {
@@ -334,7 +362,7 @@ footer a {
     100% { transform: rotate(360deg); }
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
     button {
         cursor: pointer;
     }
@@ -344,6 +372,10 @@ footer a {
     }
 
     #difficulty-options li label {
+        cursor: pointer;
+    }
+
+    #game-time {
         cursor: pointer;
     }
 
@@ -374,10 +406,13 @@ footer a {
         background-color: var(--error-color); /* Color de fondo al hacer hover */
         transform: scale(1.05); /* Escalado al hacer hover */
     }
+
+    .check-container input[type="checkbox"] {
+        cursor: pointer;
+    }
     
     .setup, .game {
         margin-top: 50px;
-        padding: 32px;
     }
 
     .hidden {
