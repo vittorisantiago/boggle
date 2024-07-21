@@ -33,11 +33,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var board = document.getElementById('board');
     var playerNameInput = document.getElementById('player-name');
     var selectedWordsDisplay = document.getElementById('selected-words');
-    var letters = [
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-        'Y', 'Z'
+    var vowels = ['A', 'E', 'I', 'O', 'U'];
+    var consonants = [
+        'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K',
+        'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T',
+        'V', 'W', 'X', 'Y', 'Z'
     ];
     var currentWord = '';
     var selectedCells = [];
@@ -178,13 +178,31 @@ document.addEventListener('DOMContentLoaded', function () {
         clearPersistentWords();
         isGameRunning = true;
     }
-
-    // Función para incializar el tablero con barras aleatorias
+    
+    // Función para inicializar el tablero de juego
     function initBoard() {
         board.innerHTML = '';
+    
+        // Selecciona exactamente 6 vocales aleatorias
+        var selectedVowels = [];
+        for (var i = 0; i < 6; i++) {
+            selectedVowels.push(vowels[Math.floor(Math.random() * vowels.length)]);
+        }
+    
+        // Selecciona exactamente 10 consonantes aleatorias
+        var selectedConsonants = [];
+        for (var i = 0; i < 10; i++) {
+            selectedConsonants.push(consonants[Math.floor(Math.random() * consonants.length)]);
+        }
+    
+        // Combina y mezcla las letras
+        var boardLetters = selectedVowels.concat(selectedConsonants);
+        boardLetters = boardLetters.sort(() => Math.random() - 0.5);
+    
+        // Asigna las letras al tablero
         for (var i = 0; i < 16; i++) {
             var cell = document.createElement('button');
-            cell.textContent = letters[Math.floor(Math.random() * letters.length)];
+            cell.textContent = boardLetters[i];
             cell.classList.add('board-cell');
             cell.addEventListener('click', handleCellClick);
             board.appendChild(cell);
