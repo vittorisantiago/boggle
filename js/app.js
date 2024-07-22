@@ -153,6 +153,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function startGame() {
+        var playerName = playerNameInput.value.trim();
+        // Guardar el nombre al iniciar el juego
+        if (playerName) {
+            localStorage.setItem('playerName', playerName);
+        }
         timerDisplay.textContent = '';
         timeRemaining = parseInt(gameTimeSelect.value, 10) * 60;
         currentWord = '';
@@ -411,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function () {
             gameElements[0].classList.add('hidden');
         }
         timerDisplay.textContent = '';
-        playerNameInput.value = '';
+        playerNameInput.value = localStorage.getItem('playerName') || '';
         clearPersistentWords();
         isGameRunning = false;
     }
@@ -463,7 +468,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Limpia todos los elementos y reinicia el juego
     function clearGame() {
         clearInterval(interval);
-        playerNameInput.value = '';
+        playerNameInput.value = localStorage.getItem('playerName') || '';
         selectedWordsDisplay.textContent = '';
         submittedWordsDisplay.textContent = '';
         clearBoard();
@@ -522,8 +527,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function saveResult() {
         var results = JSON.parse(localStorage.getItem('results') || '[]');
+        var playerName = localStorage.getItem('playerName') || playerNameInput.value.trim();
         results.push({
-            player: playerNameInput.value.trim(),
+            player: playerName,
             score: totalScore, // Guarda el puntaje total
             date: new Date().toLocaleString(),
             difficulty: difficulty,
