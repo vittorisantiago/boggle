@@ -11,9 +11,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
         // Validaciones
         var isValid = true;
-    
+
         // Validar nombre alfanumérico
-        if (!/^[a-zA-Z0-9\s]+$/.test(name)) {
+        if(name.trim() === ''){
+            Swal.fire({
+                title: 'Nombre requerido',
+                text: 'Por favor ingresa tu nombre.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            isValid = false;
+        } else if (!/^[a-zA-Z0-9\s]+$/.test(name)) {
             Swal.fire({
                 title: 'Nombre inválido',
                 text: 'El nombre debe ser alfanumérico y no debe contener caracteres especiales.',
@@ -24,7 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     
         // Validar email
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
+        if(email.trim() === '') {
+            Swal.fire({
+                title: 'Correo electrónico requerido',
+                text: 'Por favor ingresa tu correo electrónico.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            isValid = false;
+        }else if (!/^\S+@\S+\.\S+$/.test(email)) {
             Swal.fire({
                 title: 'Correo electrónico inválido',
                 text: 'Por favor ingresa un correo electrónico válido.',
@@ -35,7 +51,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     
         // Validar mensaje con más de 5 caracteres
-        if (message.length <= 5) {
+        if (message.trim() === '' ){
+            Swal.fire({
+                title: 'Mensaje requerido',
+                text: 'Por favor ingresa un mensaje.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            isValid
+        }else if (message.length <= 5) {
             Swal.fire({
                 title: 'Mensaje muy corto',
                 text: 'El mensaje debe tener más de 5 caracteres.',
